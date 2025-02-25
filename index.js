@@ -41,8 +41,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
-      mongoUrl:
-        process.env.KEY_MONGO_DB,
+      mongoUrl: process.env.KEY_MONGO_DB,
       ttl: 14 * 24 * 60 * 60,
     }),
   })
