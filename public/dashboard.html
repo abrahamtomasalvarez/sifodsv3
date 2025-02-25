@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/select/2.1.0/css/select.bootstrap5.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/buttons/3.2.0/css/buttons.bootstrap5.css"
+    />
+    <style>
+      /* Ajuste para scroll horizontal */
+      .dataTables_wrapper {
+        overflow-x: auto;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      /* Columnas truncadas */
+      table.dataTable tbody td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 350px;
+      }
+
+      /* Alternancia de color en filas */
+      table.dataTable tbody tr:nth-child(odd) {
+        background-color: #f9f9f9;
+      }
+      table.dataTable tbody tr:nth-child(even) {
+        background-color: #ffffff;
+      }
+
+      /* Estilo de encabezados */
+      table.dataTable thead th {
+        white-space: nowrap; /* Evita que el texto se parta */
+        overflow: hidden; /* Oculta el texto desbordado */
+        text-overflow: ellipsis; /* Agrega puntos suspensivos */
+        max-width: 350px; /* Ajusta el ancho máximo */
+        text-align: center;
+      }
+
+      /* Personalización del filtro y búsqueda */
+      .dataTables_filter input {
+        border: 1px solid #007bff;
+        border-radius: 5px;
+        padding: 5px;
+        margin-left: 5px;
+      }
+      .dataTables_filter label {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body class="">
+    <div
+      id="loader"
+      class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex flex-col items-center justify-center z-50"
+    >
+      <div
+        class="w-16 h-16 border-4 border-blue-500 border-dotted rounded-full animate-spin mb-4"
+      ></div>
+      <p class="text-white">Cargando, por favor espera...</p>
+    </div>
+    <div class="flex flex-col min-h-screen">
+      <!-- Header -->
+      <header
+        class="flex items-center justify-between px-6 py-4 bg-background border-b w-full"
+      >
+        <div class="flex justify-between items-center w-full">
+          <h1 class="text-xl font-bold">Bienvenido</h1>
+          <div className="flex items-center space-x-4">
+            <a href="/users" class="hover:font-bold hover:underline py-2 px-4"
+              >Usuarios</a
+            >
+            <button
+              id="logoutButton"
+              class="bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded"
+            >
+              Cerrar sesión
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="flex-1 p-2">
+        <!-- <button
+          id="showReport"
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#reportContainer"
+        >
+          Ver Reporte
+        </button> -->
+
+        <div class="container mt-2">
+          <h2 id="hojaNombre" class="font-bold pb-3">Cargando...</h2>
+          <div class="">
+            <table
+              id="example"
+              class="table table-striped table-bordered"
+              style="width: 100%"
+            >
+              <thead>
+                <tr id="tableHeader"></tr>
+              </thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <!-- <div
+          class="modal fade"
+          id="reportContainer"
+          tabindex="-1"
+          aria-labelledby="reportModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="reportModalLabel">
+                  Reporte de Estados
+                </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <table class="table">
+                  <thead>
+                    <tr id="stateHeaders">
+                      //Cabeceras dinámicas 
+                    </tr>
+                  </thead>
+                  <tbody id="reportBody">
+                    // Reporte generado dinámicamente 
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div> -->
+      </main>
+
+      <!-- Footer -->
+      <footer class="bg-gray-800 text-white py-3 text-center">
+        &copy; 2024 IMPLEMENTACIÓN - SIFODS
+      </footer>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/searchpanes/2.3.3/js/dataTables.searchPanes.js"></script>
+    <script src="https://cdn.datatables.net/searchpanes/2.3.3/js/searchPanes.bootstrap5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.0/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/select/2.1.0/js/dataTables.select.js"></script>
+    <script src="https://cdn.datatables.net/select/2.1.0/js/select.bootstrap5.js"></script>
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>
